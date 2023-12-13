@@ -3,11 +3,13 @@ const express = require('express');
 const cors=require('cors');
 const { MONGOOSE_URL, PORT } = require('./utiles/config');
 const UserRouter = require('./routes/UserRouter');
+const TicketRouter = require('./routes/TicketRouter');
 
 const app = express();
 app.use(cors())
 app.use(express.json())
-app.use('/user',UserRouter)
+app.use('/user', UserRouter)
+app.use('/ticket',TicketRouter)
 
 mongoose.connect(MONGOOSE_URL)
     .then(
