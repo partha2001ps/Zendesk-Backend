@@ -8,7 +8,18 @@ const ticketSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-      },
+         },
+      assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Mentee',
+        default: null 
+     },
+     language: String,
+     status: {
+        type: String,
+        enum: ['Open', 'In Progress', 'Closed'],
+        default: 'Open'
+    },
       createTime: {
         type: Date,
         default: Date.now

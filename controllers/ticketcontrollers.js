@@ -1,15 +1,16 @@
 const User = require('../models/user');
 const Ticket = require('../models/ticket');
+const Mentee = require('../models/mentee');
 
 const ticketcontroller = {
     createTicket: async (req, res) => {
         try {
-            const { title, category, description } = req.body;
+            const { title, category, description,language} = req.body;
             const userId = req.userId;
             const user = await User.findById(userId)
             if (user && user.activated) {
                 const quary = new Ticket({
-                    title, category, description, createTime: new Date(), user: userId
+                    title, category, description, createTime: new Date(), user: userId,language
                 })
                 await quary.save()
                 return res.status(200).json({message:"ticket create successfull"})
@@ -39,8 +40,13 @@ const ticketcontroller = {
             const { ticketId }= req.params;
             const user = await Ticket.findOne({ _id: ticketId, user: userId })
             if (user) {
-                await Ticket.findOneAndUpdate({ _id: ticketId})
-                return res.status(200).json({message:'ticket edit successfull'})
+                await Ticket.findOneAndUpdate({ _id: ticketId, user: userId }, {
+                    title: req.body.title,
+                    category: req.body.category,
+                    description: req.body.description,
+                    language:req.body.language
+                });
+                return res.status(200).json({ message: 'ticket edit successful' });
             }
             return res.status(400).json({message:"user not authorization or ticket not found"})
         } catch (e) {
@@ -54,17 +60,31 @@ const ticketcontroller = {
             const { ticketId }= req.params;
             const user = await Ticket.findOne({ _id: ticketId, user: userId })
             if (user) {
-                await Ticket.findOneAndUpdate({ _id: ticketId, user: userId }, {
-                    title: req.body.title,
-                    category: req.body.category,
-                    description: req.body.description,
-                });
-                return res.status(200).json({ message: 'ticket edit successful' });
+                await Ticket.findOneAndDelete({ _id: ticketId})
+                return res.status(200).json({ message: 'ticket delete successful' });
             }
             return res.status(400).json({ message: "user not authorized or ticket not found" });
         } catch (e) {
             console.log('delete ticket error', e)
             return res.status(500).json({message:'internal error'})
+        }
+    },   assignMentee: async (req, res) => {
+        try {
+            const { ticketId, menteeId } = req.params;
+            
+            const ticket = await Ticket.findOne({ _id: ticketId })
+            const mentee = await Mentee.findById(menteeId);
+
+            if (ticket&&mentee&&ticket.assignedTo==null) {
+                ticket.assignedTo = mentee;
+                ticket.status = 'In Progress';
+                await ticket.save();
+                return res.status(200).json({ message: 'Mentee assigned successfully' });
+            }
+            return res.status(400).json({ message: 'Invalid ticket or mentee' });
+        } catch (e) {
+            console.log('assignMentee error', e);
+            return res.status(500).json({ message: 'Internal error' });
         }
     }
 }
