@@ -8,6 +8,6 @@ TicketRouter.get('/', auth_middleware, ticketcontroller.getTicket)
 TicketRouter.delete('/:ticketId', auth_middleware, ticketcontroller.deleteTicket)
 TicketRouter.patch('/:ticketId', auth_middleware, ticketcontroller.editTicket)
 
-TicketRouter.patch('/assign/:ticketId/:menteeId', ticketcontroller.assignMentee)
+TicketRouter.get('/all',ticketcontroller.getAllTickets)
 
 module.exports=TicketRouter

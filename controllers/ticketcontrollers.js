@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const Ticket = require('../models/ticket');
-const Mentee = require('../models/mentee');
 
 const ticketcontroller = {
     createTicket: async (req, res) => {
@@ -68,25 +67,16 @@ const ticketcontroller = {
             console.log('delete ticket error', e)
             return res.status(500).json({message:'internal error'})
         }
-    },   assignMentee: async (req, res) => {
+    },
+    getAllTickets: async (req, res) => {
         try {
-            const { ticketId, menteeId } = req.params;
-            
-            const ticket = await Ticket.findOne({ _id: ticketId })
-            const mentee = await Mentee.findById(menteeId);
-
-            if (ticket&&mentee&&ticket.assignedTo==null) {
-                ticket.assignedTo = mentee;
-                ticket.status = 'In Progress';
-                await ticket.save();
-                return res.status(200).json({ message: 'Mentee assigned successfully' });
-            }
-            return res.status(400).json({ message: 'Invalid ticket or mentee' });
+            const tickets = await Ticket.find();
+            return res.status(200).json(tickets);
         } catch (e) {
-            console.log('assignMentee error', e);
-            return res.status(500).json({ message: 'Internal error' });
+            console.log('error in get all Tickets', e);
+            return res.status(500).json({ message: 'internal error' });
         }
-    }
+    },
 }
 
 module.exports=ticketcontroller
