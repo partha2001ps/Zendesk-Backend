@@ -21,7 +21,8 @@ const usercontrollers = {
             return res.status(200).json({ message: 'user created successfully' })
         }
         catch (e) {
-            console.log('signup error',e)
+            console.log('signup error', e)
+            res.status(500).json({ message: "Internal Server Error" });
         }
     },
     singin:async (req,res)=>{
@@ -37,9 +38,10 @@ const usercontrollers = {
                 email: email,
                 id:checkEmail._id
             }, JWTPASS)
-            res.json({Token,email})
+            res.json({Token,checkEmail})
             }
-            res.json({message:'user not found!'})
+            res.json({ message: 'user not found!' })
+            res.status(500).json({ message: "Internal Server Error" });
         }
         catch (e) {
             console.log('singin error',e)
@@ -98,6 +100,7 @@ const usercontrollers = {
         }
         catch (e) {
             console.log(e)
+            res.status(500).json({ message: "Internal Server Error" });
         }
     },
     activetlikesent: async (req, res) => {

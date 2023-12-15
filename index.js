@@ -5,13 +5,15 @@ const { MONGOOSE_URL, PORT } = require('./utiles/config');
 const UserRouter = require('./routes/UserRouter');
 const TicketRouter = require('./routes/TicketRouter');
 const MenteeRouter = require('./routes/MenteeRouter');
+const taskRouter = require('./routes/taskRouter');
 
 const app = express();
 app.use(cors())
 app.use(express.json())
 app.use('/user', UserRouter)
 app.use('/ticket', TicketRouter)
-app.use('/mentee',MenteeRouter)
+app.use('/mentee', MenteeRouter)
+app.use('/task',taskRouter)
 
 mongoose.connect(MONGOOSE_URL)
     .then(
