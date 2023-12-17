@@ -29,25 +29,29 @@ const usercontrollers = {
         try {
             const { email, password } = req.body;
         const checkEmail = await User.findOne({ email })
-        if (checkEmail&&!checkEmail.activated) {
-            const passwordCheck = await bcrypt.compare(password,checkEmail.passwordHash)
-            if (!passwordCheck) {
-                return res.json({ message: "password is incorrect" })
+        if (checkEmail) {
+            if (!checkEmail.activated) {
+                const passwordCheck = await bcrypt.compare(password, checkEmail.passwordHash);
+
+                if (!passwordCheck) {
+                    return res.json({ message: "Password is incorrect" });
+                }
+
+                const Token = await jwt.sign({
+                    email: email,
+                    id: checkEmail._id
+                }, JWTPASS);
+
+                return res.json({ Token, checkEmail });
+            } else {
+                return res.json({ message: 'Go to your email and click the activation link to login.' });
             }
-            const Token =await jwt.sign({
-                email: email,
-                id:checkEmail._id
-            }, JWTPASS)
-            res.json({Token,checkEmail})
-            }
-        else if (checkEmail.activated) {
-            res.json({ message: 'Go to mail and click active link after to login this page ' })
-            }
+        }
             res.json({ message: 'user not found! ' })
-            res.status(500).json({ message: "Internal Server Error" });
         }
         catch (e) {
-            console.log('singin error',e)
+            console.log('singin error', e)
+            res.status(500).json({ message: "Internal Server Error" });
         }
     },  resetPassword: async(req, res) =>{
         const { email } = req.body;
