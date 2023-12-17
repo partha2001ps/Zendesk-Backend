@@ -47,11 +47,11 @@ const usercontrollers = {
                 return res.json({ message: 'Go to your email and click the activation link to login.' });
             }
         }
-            res.json({ message: 'user not found! ' })
+          return res.json({ message: 'user not found! ' })
         }
         catch (e) {
             console.log('singin error', e)
-            res.status(500).json({ message: "Internal Server Error" });
+           return res.status(500).json({ message: "Internal Server Error" });
         }
     },  resetPassword: async(req, res) =>{
         const { email } = req.body;
