@@ -40,7 +40,7 @@ const usercontrollers = {
             }, JWTPASS)
             res.json({Token,checkEmail})
             }
-        else if (!checkEmail.activated) {
+        else if (checkEmail.activated) {
             res.json({ message: 'Go to mail and click active link after to login this page ' })
             }
             res.json({ message: 'user not found! ' })
