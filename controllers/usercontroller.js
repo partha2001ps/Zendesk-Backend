@@ -30,7 +30,7 @@ const usercontrollers = {
             const { email, password } = req.body;
         const checkEmail = await User.findOne({ email })
         if (checkEmail) {
-            if (!checkEmail.activated) {
+            if (checkEmail.activated) {
                 const passwordCheck = await bcrypt.compare(password, checkEmail.passwordHash);
 
                 if (!passwordCheck) {
