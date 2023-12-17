@@ -61,7 +61,7 @@ const menteecontrollers = {
                 pass: EMAIL_PASS,
             },
         });
-        const Link = `https://main--lively-crumble-bcfe7b.netlify.app/reset-password/new-password/${OTP}`
+        const Link = `https://candid-pudding-d739b9.netlify.app/reset-password/mentee-new-password/${OTP}`
         const mailOptions = {
             from: 'Password_resest_noreply@gmail.com',
             to: email,
