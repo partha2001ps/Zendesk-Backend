@@ -38,7 +38,7 @@ const menteecontrollers = {
                     email: email,
                     id: checkEmail._id
                 }, JWTPASS)
-                res.json({ Token, email })
+                res.json({ Token,checkEmail})
             }
             res.json({ message: 'user not found!' })
         }
