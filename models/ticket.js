@@ -9,11 +9,11 @@ const ticketSchema = new mongoose.Schema({
         ref: 'User',
         required: true
          },
-      assignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Mentee',
-        default: null 
-     },
+         assignedTo: {
+          type: String,  
+          ref: 'Mentee',  
+          default: null 
+      },
      language: String,
      status: {
         type: String,
