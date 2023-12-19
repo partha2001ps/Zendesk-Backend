@@ -8,7 +8,7 @@ MenteeRouter.post('/signin', menteecontrollers.singin)
 MenteeRouter.post('/reset-password', menteecontrollers.resetPassword)
 MenteeRouter.post('/reset-password/:OTP', menteecontrollers.newpassword)
 
-MenteeRouter.patch('/:ticketId/:menteeId',auth_middleware, menteecontrollers.assignMentee)
+MenteeRouter.patch('/:ticketId/:menteeId', menteecontrollers.assignMentee)
 MenteeRouter.get('/:menteeId',auth_middleware, menteecontrollers.getMenteeTickets)
 MenteeRouter.put('/:ticketId',menteecontrollers.closeTicket)
 
