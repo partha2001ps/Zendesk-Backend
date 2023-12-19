@@ -35,22 +35,20 @@ const ticketcontroller = {
     },
     editTicket:async (req,res)=> {
         try {
-            const userId = req.userId;
-            const { ticketId }= req.params;
-            const user = await Ticket.findOne({ _id: ticketId, user: userId })
-            if (user) {
-                await Ticket.findOneAndUpdate({ _id: ticketId, user: userId }, {
-                    title: req.body.title,
-                    category: req.body.category,
-                    description: req.body.description,
-                    language:req.body.language
-                });
-                return res.status(200).json({ message: 'ticket edit successful' });
+            const { ticketId } = req.params;
+            const ticket = await Ticket.findById(ticketId);
+
+            if (ticket) {
+                ticket.status = 'Closed';
+                await ticket.save();
+
+                return res.status(200).json({ message: 'Ticket closed successfully' });
             }
-            return res.status(400).json({message:"user not authorization or ticket not found"})
+
+            return res.status(400).json({ message: 'Invalid ticket or ticket not assigned' });
         } catch (e) {
-            console.log('error in edit Ticket', e)
-            return res.status(500).json({message:'internal error'})
+            console.log('closeTicket error', e);
+            return res.status(500).json({ message: 'Internal error' });
         }
     },
     deleteTicket: async (req, res) => {
